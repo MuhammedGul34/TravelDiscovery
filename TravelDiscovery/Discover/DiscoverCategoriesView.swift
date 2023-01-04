@@ -21,32 +21,57 @@ struct DiscoverCategoriesView: View {
         ScrollView(.horizontal, showsIndicators: false){
             HStack(spacing: 14){
                 ForEach(categories, id: \.self) { category in
-                    VStack(spacing: 4){
-//                        Spacer()
-                        Image(systemName: category.imageName)
-                            .font(.system(size: 27))
-                            .foregroundColor(Color.orange)
-                            .frame(width: 70, height: 70)
-                            .background(Color.white)
-                            .cornerRadius(.infinity)
-//                            .shadow(color: .gray, radius: 5, x: 0.0, y: 2.0)
-                        Text(category.name)
-                            .font(.system(size: 12, weight: .semibold))
-                    }.frame(width: 68)
+                    NavigationLink {
+                        CategoryDetailsView()
+                    } label: {
+                        VStack(spacing: 4){
+                            Image(systemName: category.imageName)
+                                .font(.system(size: 27))
+                                .foregroundColor(Color.orange)
+                                .frame(width: 70, height: 70)
+                                .background(Color.white)
+                                .cornerRadius(.infinity)
+
+                            Text(category.name)
+                                .font(.system(size: 12, weight: .semibold))
+                        }.frame(width: 68)
+                    }.foregroundColor(Color.white)
+
                 }
             }.padding(.horizontal)
         }
     }
 }
 
+struct CategoryDetailsView: View {
+    var body: some View {
+        ScrollView{
+            ForEach(0..<5, id: \.self){ num in
+                VStack(alignment: .leading,spacing: 0){
+                    Image("art1")
+                        .resizable()
+                        .scaledToFill()
+                    Text("Demo123")
+                        .font(.system(size: 12, weight: .semibold))
+                }.asTile()
+                    .padding()
+            }
+          
+        }.navigationBarTitle("Category", displayMode: .inline)
+        
+    }
+}
 
 struct DiscoverCategoriesView_Previews: PreviewProvider {
     static var previews: some View {
         
-        ZStack{
-            Color.orange
-            DiscoverCategoriesView()
+        NavigationView {
+            CategoryDetailsView()
         }
+//        ZStack{
+//            Color.orange
+//            DiscoverCategoriesView()
+//        }
         DiscoverView()
     }
 }
