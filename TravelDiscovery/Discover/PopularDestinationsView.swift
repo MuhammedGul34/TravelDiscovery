@@ -35,7 +35,7 @@ struct PopularDestinationsView: View {
                                 .resizable()
                                 .scaledToFill()
                                 .frame(width: 120, height: 120)
-//                                .clipped()
+
                                 .cornerRadius(4)
                                 .padding(.horizontal, 6)
                                 .padding(.vertical,6)
@@ -51,18 +51,14 @@ struct PopularDestinationsView: View {
                                 .padding(.bottom, 8)
                                 .foregroundColor(.gray)
                         }
-//                            .frame(width: 125)
-                        .background(Color.white)
-                            .cornerRadius(5)
-                            .shadow(color: .init(.sRGB, white: 0.8, opacity: 1), radius: 5, x: 0.0, y: 2.0)
-                            .padding(.bottom)
+                        .asTile()
+                        .padding(.bottom)
                     }
                 }.padding(.horizontal)
             }
         }
     }
 }
-
 
 struct PopularDestinationsView_Previews: PreviewProvider {
     static var previews: some View {
