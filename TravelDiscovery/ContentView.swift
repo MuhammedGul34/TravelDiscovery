@@ -8,19 +8,48 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    init(){
+        UINavigationBar.appearance().largeTitleTextAttributes = [
+            .foregroundColor: UIColor.white]
+    }
+    
     var body: some View {
         NavigationView {
             
-            ScrollView {
+            ZStack {
+                LinearGradient(colors: [Color.orange, Color.white], startPoint: .top, endPoint: .bottom)
+                    .ignoresSafeArea()
                 
-                DiscoverCategoriesView()
+                Color(.init(white: 0.95, alpha: 1))
+                    .offset(y: 400)
                 
-                PopularDestinationView()
-                
-                PopularRestaurantsView()
-                
-                TrendingCreatorsView()
-                
+                ScrollView {
+                    
+                    HStack {
+                        Image(systemName: "magnifyingglass")
+                        Text("Where do you want to?")
+                        Spacer()
+                    }.font(.system(size: 14, weight: .semibold))
+                        .foregroundColor(.white)
+                        .padding(10)
+                        .background(Color(.init(white: 1, alpha: 0.3)))
+                        .cornerRadius(10)
+                        .padding(16)
+                 
+                    
+                    DiscoverCategoriesView()
+                    
+                    VStack{
+                        PopularDestinationView()
+                        
+                        PopularRestaurantsView()
+                        
+                        TrendingCreatorsView()
+                    }.background(Color(.init(white: 0.95, alpha: 1)))
+                        .cornerRadius(16)
+                        .padding(.top, 32)
+                }
             }.navigationTitle("Discover")
         }
     }
@@ -75,9 +104,9 @@ struct PopularDestinationView: View {
                                 .foregroundColor(.gray)
                         }
 //                            .frame(width: 125)
-                            .background(Color(.init(white: 0.9, alpha: 1)))
-                            .cornerRadius(10)
-                            .shadow(color: .gray, radius: 5, x: 0.0, y: 2.0)
+                        .background(Color.white)
+                            .cornerRadius(5)
+                            .shadow(color: .init(.sRGB, white: 0.8, opacity: 1), radius: 5, x: 0.0, y: 2.0)
                             .padding(.bottom)
                     }
                 }.padding(.horizontal)
@@ -145,8 +174,9 @@ struct PopularRestaurantsView: View {
                                 
                         }
                             .frame(width: 240)
-                            .background(Color(.init(white: 0.9, alpha: 1)))
+                            .background(Color.white)
                             .cornerRadius(5)
+                            .shadow(color: .init(.sRGB, white: 0.8, opacity: 1), radius: 5, x: 0.0, y: 2.0)
                             .shadow(color: .gray, radius: 5, x: 0.0, y: 2.0)
                             .padding(.bottom)
                     }
@@ -234,11 +264,11 @@ struct DiscoverCategoriesView: View {
 //                        Spacer()
                         Image(systemName: category.imageName)
                             .font(.system(size: 27))
-                            .foregroundColor(.white)
+                            .foregroundColor(Color.orange)
                             .frame(width: 70, height: 70)
-                            .background(Color.gray)
+                            .background(Color.white)
                             .cornerRadius(.infinity)
-                            .shadow(color: .gray, radius: 5, x: 0.0, y: 2.0)
+//                            .shadow(color: .gray, radius: 5, x: 0.0, y: 2.0)
                         Text(category.name)
                             .font(.system(size: 12, weight: .semibold))
                     }.frame(width: 68)
