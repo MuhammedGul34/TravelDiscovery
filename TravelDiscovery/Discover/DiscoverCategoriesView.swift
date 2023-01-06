@@ -43,17 +43,43 @@ struct DiscoverCategoriesView: View {
     }
 }
 
+struct Place: Decodable, Hashable {
+    let name, thumbnail: String
+}
+
 class CategoryDetailsViewModel: ObservableObject {
     
     @Published var isLoading = true
-    @Published var places = [Int]()
+    @Published var places = [Place]()
+    @Published var errorMessage = ""
     
     init(){
         // network code will happen here
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            self.isLoading = false
-            self.places = [1,2,3,4,5,6,7]
-        }
+        
+        guard let url = URL(string: "https://travel.letsbuildthatapp.com/travel_discovery/category?name=art") else { return }
+        
+        URLSession.shared.dataTask(with: url) { data, resp, err in
+            
+            // you want to check response status code and err
+            
+           
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                
+                guard let data = data else { return }
+                
+                do {
+                    self.places = try JSONDecoder().decode([Place].self, from: data)
+                } catch {
+                    print("Failed to decode JSON", error)
+                    self.errorMessage = error.localizedDescription
+                }
+                
+                self.isLoading = false
+//                self.places = [1]
+            }
+        }.resume()
+        
+        
     }
 }
 
@@ -75,7 +101,6 @@ struct CategoryDetailsView: View {
 
     @ObservedObject var vm = CategoryDetailsViewModel()
     
-    
     var body: some View {
         ZStack {
             if vm.isLoading {
@@ -89,17 +114,20 @@ struct CategoryDetailsView: View {
                 .cornerRadius(8)
                     
             } else {
-                ScrollView{
-                    ForEach(vm.places, id: \.self){ num in
-                        VStack(alignment: .leading,spacing: 0){
-                            Image("art1")
-                                .resizable()
-                                .scaledToFill()
-                            Text("Demo123456")
+                ZStack {
+                    Text(vm.errorMessage)
+                    ScrollView{
+                        ForEach(vm.places, id: \.self){ place in
+                            VStack(alignment: .leading,spacing: 0){
+                                Image("art1")
+                                    .resizable()
+                                    .scaledToFill()
+                                Text(place.name)
+                                    .padding()
+                                    .font(.system(size: 14, weight: .semibold))
+                            }.asTile()
                                 .padding()
-                                .font(.system(size: 12, weight: .semibold))
-                        }.asTile()
-                            .padding()
+                        }
                     }
                 }
             }
